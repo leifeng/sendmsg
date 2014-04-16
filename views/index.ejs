@@ -3,15 +3,27 @@
 <head>
     <title>推送管理</title>
     <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="http://sendmsg.0372.cn/socket.io/socket.io.js"></script>
+
 </head>
 <body>
-<form action="/" method="post">
-    <input type="text" width="200">
-    <input type="submit" width="100" value="send">
-    <% if(status == '1'){ %>
-    推送成功
-    <% } %>
-</form>
 
+<input type="text" width="200" id="msg">
+<a href="javascript:;" id="send">send</a>
+
+<script>
+    var socket = io.connect('http://sendmsg.0372.cn');
+
+    socket.on('server', function (data) {
+        alert(data.msg);
+    });
+    var send = document.getElementById('send');
+    var message=document.getElementById('msg');
+    send.addEventListener('click', function () {
+        socket.emit('manager', { msg: '推送：'+message.value });
+        //socket.broadcast.emit('22222222222222');
+        console.log('ok')
+    })
+</script>
 </body>
 </html>

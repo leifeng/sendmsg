@@ -28,14 +28,18 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.post('/', routes.pushMsg);
+
 
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
-    socket.emit('server',{msg:'hello!'})
+   // socket.emit('server',{msg:'hello!'})
     socket.on('client', function (data) {
         console.log(data);
     });
+    socket.on('manager',function(data){
+        console.log(data);
+        socket.emit('server',data)
+    })
 });
 
 server.listen(app.get('port'), function () {

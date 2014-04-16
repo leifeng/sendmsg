@@ -3,10 +3,6 @@
  */
 
 exports.index = function (req, res) {
-    res.render('index', { status: '0' });
+    res.render('index');
 };
 
-exports.pushMsg = function (req, res) {
-
-    res.render('index', { status: '1' })
-}
