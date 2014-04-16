@@ -32,11 +32,13 @@ app.get('/', routes.index);
 var peopleNum = 0;
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
+
     socket.on('client', function (data) {
-        console.log(data);
+        console.log(data.msg);
         peopleNum = peopleNum + 1;
-        socket.emit("peopleNum", {num: peopleNum});
         console.log('在线人数:'+peopleNum)
+        socket.broadcast.emit("peopleNum", {num: peopleNum});
+
     });
     socket.on('manager_info', function (data) {
         console.log(data);
@@ -50,8 +52,9 @@ io.sockets.on('connection', function (socket) {
     });
     socket.on('disconnect', function () {
         peopleNum = peopleNum - 1;
-        socket.emit("peopleNum", {num: peopleNum});
         console.log('在线人数:'+peopleNum);
+        socket.broadcast.emit("peopleNum", {num: peopleNum});
+
     })
 });
 
