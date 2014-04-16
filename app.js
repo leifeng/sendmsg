@@ -29,18 +29,30 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 
-
+var peopleNum = 0;
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
     socket.on('client', function (data) {
         console.log(data);
+        peopleNum = peopleNum + 1;
+        socket.emit("peopleNum", {num: peopleNum});
+        console.log('在线人数:'+peopleNum)
     });
-    socket.on('manager', function (data) {
+    socket.on('manager_info', function (data) {
         console.log(data);
-       // io.sockets.emit("server", data);
-        socket.broadcast.emit("server", data);
+        socket.broadcast.emit("server_info", data);
 
     });
+    socket.on('manager_img', function (data) {
+        console.log(data);
+        socket.broadcast.emit("server_img", data);
+
+    });
+    socket.on('disconnect', function () {
+        peopleNum = peopleNum - 1;
+        socket.emit("peopleNum", {num: peopleNum});
+        console.log('在线人数:'+peopleNum);
+    })
 });
 
 server.listen(app.get('port'), function () {

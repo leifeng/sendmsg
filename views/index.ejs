@@ -10,20 +10,31 @@
 
 <input type="text" width="200" id="msg">
 <a href="javascript:;" id="send">send</a>
+<br/>
+<input type="text" width="500" id="imgurl">
+<a href="javascript:;" id="sendurl">sendurl</a>
+<br/>
 
+<div>在线人数：<span id="num" style="color: red"></span></div>
 <script>
     var socket = io.connect('http://sendmsg.0372.cn');
-
-    socket.on('server', function (data) {
-        alert(data.msg);
-    });
+    var num = document.getElementById('num');
     var send = document.getElementById('send');
-    var message=document.getElementById('msg');
+    var sendurl = document.getElementById('sendurl');
+    var message = document.getElementById('msg');
+    var imgurl = document.getElementById('imgurl');
+
+    socket.on('peopleNum', function (data) {
+        num.innerText = data.num;
+    });
     send.addEventListener('click', function () {
-        socket.emit('manager', { msg: '推送：'+message.value });
-        //socket.broadcast.emit('22222222222222');
+        socket.emit('manager_info', { msg: '推送：' + message.value });
         console.log('ok')
-    })
+    });
+    sendurl.addEventListener('click', function () {
+        socket.emit('manager_img', { msg:imgurl.value });
+        console.log('ok')
+    });
 </script>
 </body>
 </html>
