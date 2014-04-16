@@ -32,14 +32,15 @@ app.get('/', routes.index);
 
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
-   // socket.emit('server',{msg:'hello!'})
     socket.on('client', function (data) {
         console.log(data);
     });
-    socket.on('manager',function(data){
+    socket.on('manager', function (data) {
         console.log(data);
-        socket.emit('server',data)
-    })
+       // io.sockets.emit("server", data);
+        socket.broadcast.emit("server", data);
+
+    });
 });
 
 server.listen(app.get('port'), function () {
