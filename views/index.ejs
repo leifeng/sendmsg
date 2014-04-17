@@ -71,7 +71,7 @@
         console.log('ok')
     });
     $('.sendOneImg').on('click', function () {
-        socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value, room: $(this).attr('title')}});
+        socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value}, room: $(this).attr('title')});
         console.log('ok')
     });
 
