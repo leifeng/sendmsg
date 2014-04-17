@@ -28,18 +28,60 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-
-var peopleNum = 0;
+var qc = 0, jc = 0, hy = 0, bbs = 0, zz = 0, total = 0,tg=0;
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
+    socket.on('channel', function (data) {
+        console.log('上线：'+data.msg);
+        switch (data.msg) {
+            case 'qc':
+                qc++;
+                break;
+            case 'jc':
+                jc++;
+                break;
+            case 'bbs':
+                bbs++;
+                break;
+            case 'hy':
+                hy++;
+                break;
+            case 'zz':
+                zz++;
+                break;
+            default :
+                break;
+        }
+        total = total + 1;
+        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, zz: zz, tg: tg, total: total} });
+    });
 
-    socket.on('client', function (data) {
-        console.log(data.msg);
-        peopleNum = peopleNum + 1;
-        console.log('在线人数:'+peopleNum)
-        socket.broadcast.emit("peopleNum", {num: peopleNum});
+    socket.on('unchannel', function (data) {
+        console.log('下线：'+data.msg);
+        switch (data.msg) {
+            case 'qc':
+                qc--;
+                break;
+            case 'jc':
+                jc--;
+                break;
+            case 'bbs':
+                bbs--;
+                break;
+            case 'hy':
+                hy--;
+                break;
+            case 'zz':
+                zz--;
+                break;
+            default :
+                break;
+        }
+        total = total - 1;
+        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, tg: tg,zz:zz, total: total} });
 
     });
+
     socket.on('manager_info', function (data) {
         console.log(data);
         socket.broadcast.emit("server_info", data);
@@ -50,10 +92,11 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit("server_img", data);
 
     });
+
     socket.on('disconnect', function () {
-        peopleNum = peopleNum - 1;
-        console.log('在线人数:'+peopleNum);
-        socket.broadcast.emit("peopleNum", {num: peopleNum});
+//        peopleNum = peopleNum - 1;
+//        console.log('在线人数:' + peopleNum);
+//        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, zhuzhan: zhuzhan, peopleNum: peopleNum} });
 
     })
 });

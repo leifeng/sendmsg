@@ -8,31 +8,56 @@
 </head>
 <body>
 
-<input type="text" width="200" id="msg">
-<a href="javascript:;" id="send">send</a>
+<input type="text" width="200" id="msg" placeholder="文字">
+<a href="javascript:;" id="send">发送文字</a>
 <br/>
-<input type="text" width="500" id="imgurl">
-<a href="javascript:;" id="sendurl">sendurl</a>
+<input type="text" width="500" id="imgurl" placeholder="图片">
+<input type="text" width="500" id="imglink" placeholder="链接">
+<a href="javascript:;" id="sendurl">发送图片</a>
 <br/>
 
-<div>在线人数：<span id="num" style="color: red"></span></div>
+<h5>在线人数：</h5>
+<ul>
+    <li>汽车<span id="qc"></span></li>
+    <li>团购<span id="tg"></span></li>
+    <li>建材<span id="jc"></span></li>
+    <li>论坛<span id="bbs"></span></li>
+    <li>主站<span id="zz"></span></li>
+    <li>黄页<span id="hy"></span></li>
+    <li>总数<span id="total"></span></li>
+</ul>
 <script>
     var socket = io.connect('http://sendmsg.0372.cn');
-    var num = document.getElementById('num');
+    var qc = document.getElementById('qc');
+    var tg = document.getElementById('tg');
+    var jc = document.getElementById('jc');
+    var bbs = document.getElementById('bbs');
+    var zz = document.getElementById('zz');
+    var hy = document.getElementById('hy');
+    var total = document.getElementById('total');
+
+
     var send = document.getElementById('send');
     var sendurl = document.getElementById('sendurl');
     var message = document.getElementById('msg');
     var imgurl = document.getElementById('imgurl');
+    var imglink = document.getElementById('imglink');
 
     socket.on('peopleNum', function (data) {
-        num.innerText = data.num;
+        total.innerText = data.total;
+        qc.innerText = data.qc;
+        tg.innerText = data.tg;
+        jc.innerText = data.jc;
+        hy.innerText = data.hy;
+        bbs.innerText = data.bbs;
+        zz.innerText = data.zz;
     });
     send.addEventListener('click', function () {
-        socket.emit('manager_info', { msg: '推送：' + message.value });
+        socket.emit('manager_info', { msg: message.value });
         console.log('ok')
     });
     sendurl.addEventListener('click', function () {
-        socket.emit('manager_img', { msg:imgurl.value });
+        socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value}});
         console.log('ok')
     });
 </script>
