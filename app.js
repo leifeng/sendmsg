@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-var qc_ = 0, jc_ = 0, hy_ = 0, bbs_ = 0, zz_ = 0, total_ = 0, tg_ = 0;
+var qc_ = 0, jc_ = 0, hy_ = 0, bbs_ = 0, zz_ = 0, total_ = 0, tg_ = 0, fc_ = 0;
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
     socket.on('channel', function (data) {
@@ -36,6 +36,9 @@ io.sockets.on('connection', function (socket) {
         switch (data.msg) {
             case 'qc':
                 qc_++;
+                break;
+            case 'fc':
+                fc_++;
                 break;
             case 'tg':
                 tg_--;
@@ -56,7 +59,7 @@ io.sockets.on('connection', function (socket) {
                 break;
         }
         total_ = total_ + 1;
-        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_} });
+        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
     });
 
     socket.on('unchannel', function (data) {
@@ -67,6 +70,9 @@ io.sockets.on('connection', function (socket) {
                 break;
             case 'tg':
                 tg_--;
+                break;
+            case 'fc':
+                fc_--;
                 break;
             case 'jc':
                 jc_--;
@@ -84,7 +90,7 @@ io.sockets.on('connection', function (socket) {
                 break;
         }
         total_ = total_ - 1;
-        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, tg: tg_, zz: zz_, total: total_} });
+        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
 
     });
 
