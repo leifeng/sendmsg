@@ -44,13 +44,13 @@
     var imglink = document.getElementById('imglink');
 
     socket.on('peopleNum', function (data) {
-        total.innerText = data.total;
-        qc.innerText = data.qc;
-        tg.innerText = data.tg;
-        jc.innerText = data.jc;
-        hy.innerText = data.hy;
-        bbs.innerText = data.bbs;
-        zz.innerText = data.zz;
+        total.innerText = data.msg.total;
+        qc.innerText = data.msg.qc;
+        tg.innerText = data.msg.tg;
+        jc.innerText = data.msg.jc;
+        hy.innerText = data.msg.hy;
+        bbs.innerText = data.msg.bbs;
+        zz.innerText = data.msg.zz;
     });
     send.addEventListener('click', function () {
         socket.emit('manager_info', { msg: message.value });

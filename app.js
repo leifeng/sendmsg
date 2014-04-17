@@ -28,57 +28,63 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-var qc = 0, jc = 0, hy = 0, bbs = 0, zz = 0, total = 0,tg=0;
+var qc_ = 0, jc_ = 0, hy_ = 0, bbs_ = 0, zz_ = 0, total_ = 0, tg_ = 0;
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
     socket.on('channel', function (data) {
-        console.log('上线：'+data.msg);
+        console.log('上线：' + data.msg);
         switch (data.msg) {
             case 'qc':
-                qc++;
+                qc_++;
+                break;
+            case 'tg':
+                tg_--;
                 break;
             case 'jc':
-                jc++;
+                jc_++;
                 break;
             case 'bbs':
-                bbs++;
+                bbs_++;
                 break;
             case 'hy':
-                hy++;
+                hy_++;
                 break;
             case 'zz':
-                zz++;
+                zz_++;
                 break;
             default :
                 break;
         }
-        total = total + 1;
-        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, zz: zz, tg: tg, total: total} });
+        total_ = total_ + 1;
+        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_} });
     });
 
     socket.on('unchannel', function (data) {
-        console.log('下线：'+data.msg);
+        console.log('下线：' + data.msg);
         switch (data.msg) {
             case 'qc':
-                qc--;
+                qc_--;
+                break;
+            case 'tg':
+                tg_--;
                 break;
             case 'jc':
-                jc--;
+                jc_--;
                 break;
             case 'bbs':
-                bbs--;
+                bbs_--;
                 break;
             case 'hy':
-                hy--;
+                hy_--;
                 break;
             case 'zz':
-                zz--;
+                zz_--;
                 break;
             default :
                 break;
         }
-        total = total - 1;
-        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, tg: tg,zz:zz, total: total} });
+        total_ = total_ - 1;
+        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, tg: tg_, zz: zz_, total: total_} });
 
     });
 
