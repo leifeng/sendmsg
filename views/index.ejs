@@ -9,26 +9,25 @@
 <body>
 
 <input type="text" width="200" id="msg" placeholder="文字">
-<a href="javascript:;" id="send">发送文字</a>
 <br/>
 <input type="text" width="500" id="imgurl" placeholder="图片">
 <input type="text" width="500" id="imglink" placeholder="链接">
-<a href="javascript:;" id="sendurl">发送图片</a>
-<br/>
 
-<h5>在线人数：</h5>
+
+<h4>在线人数：</h4>
 <ul>
-    <li>汽车<span id="qc"></span></li>
-    <li>团购<span id="tg"></span></li>
-    <li>建材<span id="jc"></span></li>
-    <li>论坛<span id="bbs"></span></li>
-    <li>主站<span id="zz"></span></li>
-    <li>黄页<span id="hy"></span></li>
-    <li>房产<span id="fc"></span></li>
-    <li>总数<span id="total"></span></li>
+    <li>汽车<span id="qc"></span><span class="sendOneMsg" title="qc">发送文字</span><span class="sendOneImg" title="qc">发送图片</span></li>
+    <li>团购<span id="tg"></span><span class="sendOneMsg" title="tg">发送文字</span><span class="sendOneImg" title="tg">发送图片</span></li>
+    <li>建材<span id="jc"></span><span class="sendOneMsg" title="jc">发送文字</span><span class="sendOneImg" title="jc">发送图片</span></li>
+    <li>论坛<span id="bbs"></span><span class="sendOneMsg" title="bbs">发送文字</span><span class="sendOneImg" title="bbs">发送图片</span></li>
+    <li>主站<span id="zz"></span><span class="sendOneMsg" title="zz">发送文字</span><span class="sendOneImg" title="zz">发送图片</span></li>
+    <li>黄页<span id="hy"></span><span class="sendOneMsg" title="hy">发送文字</span><span class="sendOneImg" title="hy">发送图片</span></li>
+    <li>房产<span id="fc"></span><span class="sendOneMsg" title="fc">发送文字</span><span class="sendOneImg" title="fc">发送图片</span></li>
+    <li>总数<span id="total"></span><span id="sendAllMsg">发送所有频道(文字)</span><span id="sendAllImg">发送所有频道(图片)</span></li>
 </ul>
 <script>
     var socket = io.connect('http://sendmsg.0372.cn');
+
     var qc = document.getElementById('qc');
     var tg = document.getElementById('tg');
     var jc = document.getElementById('jc');
@@ -37,14 +36,17 @@
     var hy = document.getElementById('hy');
     var fc = document.getElementById('fc');
     var total = document.getElementById('total');
+    var sendOneMsg = document.getElementsByClassName('sendOneMsg');
+    var sendOneImg = document.getElementsByClassName('sendOneImg');
 
+    var sendAllMsg = document.getElementById('sendAllMsg');
+    var sendAllImg = document.getElementById('sendAllImg');
 
-    var send = document.getElementById('send');
-    var sendurl = document.getElementById('sendurl');
     var message = document.getElementById('msg');
     var imgurl = document.getElementById('imgurl');
     var imglink = document.getElementById('imglink');
 
+    socket.emit('room', 'manager');
     socket.on('peopleNum', function (data) {
         total.innerText = data.msg.total;
         qc.innerText = data.msg.qc;
@@ -55,14 +57,27 @@
         zz.innerText = data.msg.zz;
         fc.innerText = data.msg.fc;
     });
-    send.addEventListener('click', function () {
+    sendAllMsg.addEventListener('click', function () {
         socket.emit('manager_info', { msg: message.value });
         console.log('ok')
     });
-    sendurl.addEventListener('click', function () {
+    sendAllImg.addEventListener('click', function () {
         socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value}});
         console.log('ok')
     });
+    for(var i=0;i<sendOneMsg.length;i++){
+        sendOneMsg[i].addEventListener('click',function(){
+            socket.emit('manager_info', { msg: message.value,room:this.attribute('title') });
+            console.log('ok')
+        });
+    }
+
+    for(var i=0;i<sendOneImg.length;i++){
+        sendOneImg[i].addEventListener('click',function(){
+            socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value,room:this.attribute('title')}});
+            console.log('ok')
+        });
+    }
 </script>
 </body>
 </html>

@@ -29,8 +29,17 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 var qc_ = 0, jc_ = 0, hy_ = 0, bbs_ = 0, zz_ = 0, total_ = 0, tg_ = 0, fc_ = 0;
-io.set('log level', 1);
+io.enable('browser client minification');
+io.enable('browser client etag');
+io.set('log level', 3);
+io.set('heartbeat interval', '40')
 io.sockets.on('connection', function (socket) {
+
+    socket.on('room', function (room) {
+        socket.room = room;
+        socket.join(room);
+    });
+
     socket.on('channel', function (data) {
         console.log('上线：' + data.msg);
         switch (data.msg) {
@@ -41,7 +50,7 @@ io.sockets.on('connection', function (socket) {
                 fc_++;
                 break;
             case 'tg':
-                tg_--;
+                tg_++;
                 break;
             case 'jc':
                 jc_++;
@@ -59,7 +68,8 @@ io.sockets.on('connection', function (socket) {
                 break;
         }
         total_ = total_ + 1;
-        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
+        //socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
+        io.sockets.in('manager').emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
     });
 
     socket.on('unchannel', function (data) {
@@ -90,26 +100,34 @@ io.sockets.on('connection', function (socket) {
                 break;
         }
         total_ = total_ - 1;
-        socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
-
+        //socket.broadcast.emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
+        io.sockets.in('manager').emit("peopleNum", {msg: {qc: qc_, jc: jc_, hy: hy_, bbs: bbs_, zz: zz_, tg: tg_, total: total_, fc: fc_} });
     });
 
     socket.on('manager_info', function (data) {
         console.log(data);
-        socket.broadcast.emit("server_info", data);
+        //socket.broadcast.emit("server_info", data);
+        if (data.room) {
+            io.sockets.in(data.room).emit('server_info', data);
+        } else {
+            io.sockets.emit('server_info', data);
+        }
+
 
     });
     socket.on('manager_img', function (data) {
         console.log(data);
-        socket.broadcast.emit("server_img", data);
-
+        //socket.broadcast.emit("server_img", data);
+        if (data.room) {
+            io.sockets.in(data.room).emit('server_img', data);
+        } else {
+            io.sockets.emit('server_img', data);
+        }
     });
 
     socket.on('disconnect', function () {
-//        peopleNum = peopleNum - 1;
-//        console.log('在线人数:' + peopleNum);
-//        socket.broadcast.emit("peopleNum", {num: {qc: qc, jc: jc, hy: hy, bbs: bbs, zhuzhan: zhuzhan, peopleNum: peopleNum} });
-
+        console.log('离开：' + socket.room);
+        socket.leave(socket.room);
     })
 });
 
