@@ -32,10 +32,11 @@ var qc_ = 0, jc_ = 0, hy_ = 0, bbs_ = 0, zz_ = 0, total_ = 0, tg_ = 0, fc_ = 0;
 io.enable('browser client minification');
 io.enable('browser client etag');
 io.set('log level', 3);
-io.set('heartbeat interval', '40')
+io.set('heartbeat interval', '40');
 io.sockets.on('connection', function (socket) {
 
     socket.on('room', function (room) {
+        console.log('加入：'+room);
         socket.room = room;
         socket.join(room);
     });
