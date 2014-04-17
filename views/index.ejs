@@ -59,19 +59,19 @@
         fc.text(data.msg.fc);
     });
     $('#sendAllMsg').on('click', function () {
-        socket.emit('manager_info', { msg: message.value });
+        socket.emit('manager_info', { msg: message.val() });
         console.log('ok')
     });
     $('#sendAllImg').on('click', function () {
-        socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value}});
+        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val()}});
         console.log('ok')
     });
     $('.sendOneMsg').on('click', function () {
-        socket.emit('manager_info', { msg: message.value, room: $(this).attr('title') });
+        socket.emit('manager_info', { msg: message.val(), room: $(this).attr('title') });
         console.log('ok')
     });
     $('.sendOneImg').on('click', function () {
-        socket.emit('manager_img', { msg: {url: imgurl.value, link: imglink.value}, room: $(this).attr('title')});
+        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val()}, room: $(this).attr('title')});
         console.log('ok')
     });
 
