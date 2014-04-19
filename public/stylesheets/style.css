@@ -6,13 +6,23 @@ body {
 a {
     color: #00B7FF;
 }
-
+input{
+    border: 1px solid #AEBDCC;
+}
 ul li {
     line-height: 27px;
     list-style: none;
 }
+
 ul li span{
     margin-left: 10px;
-    color: red;
-    font-size: 18px;
+    color: green;
+    cursor: pointer;
+    font-size: 12px;
 }
+ul li span:first-child{
+    margin-left: 10px;
+    color: red;
+    font-size: 12px;
+    cursor:default;
+:}

@@ -17,21 +17,21 @@
 
 <h4>在线人数：</h4>
 <ul>
-    <li>汽车<span id="qc"></span><span class="sendOneMsg" title="qc">发送文字</span><span class="sendOneImg"
+    <li>汽车<span id="qc">0</span><span class="sendOneMsg" title="qc">发送文字</span><span class="sendOneImg"
                                                                                     title="qc">发送图片</span></li>
-    <li>团购<span id="tg"></span><span class="sendOneMsg" title="tg">发送文字</span><span class="sendOneImg"
+    <li>团购<span id="tg">0</span><span class="sendOneMsg" title="tg">发送文字</span><span class="sendOneImg"
                                                                                     title="tg">发送图片</span></li>
-    <li>建材<span id="jc"></span><span class="sendOneMsg" title="jc">发送文字</span><span class="sendOneImg"
+    <li>建材<span id="jc">0</span><span class="sendOneMsg" title="jc">发送文字</span><span class="sendOneImg"
                                                                                     title="jc">发送图片</span></li>
-    <li>论坛<span id="bbs"></span><span class="sendOneMsg" title="bbs">发送文字</span><span class="sendOneImg" title="bbs">发送图片</span>
+    <li>论坛<span id="bbs">0</span><span class="sendOneMsg" title="bbs">发送文字</span><span class="sendOneImg" title="bbs">发送图片</span>
     </li>
-    <li>主站<span id="zz"></span><span class="sendOneMsg" title="zz">发送文字</span><span class="sendOneImg"
+    <li>主站<span id="zz">0</span><span class="sendOneMsg" title="zz">发送文字</span><span class="sendOneImg"
                                                                                     title="zz">发送图片</span></li>
-    <li>黄页<span id="hy"></span><span class="sendOneMsg" title="hy">发送文字</span><span class="sendOneImg"
+    <li>黄页<span id="hy">0</span><span class="sendOneMsg" title="hy">发送文字</span><span class="sendOneImg"
                                                                                     title="hy">发送图片</span></li>
-    <li>房产<span id="fc"></span><span class="sendOneMsg" title="fc">发送文字</span><span class="sendOneImg"
+    <li>房产<span id="fc">0</span><span class="sendOneMsg" title="fc">发送文字</span><span class="sendOneImg"
                                                                                     title="fc">发送图片</span></li>
-    <li>总数<span id="total"></span><span id="sendAllMsg">发送所有频道(文字)</span><span id="sendAllImg">发送所有频道(图片)</span></li>
+    <li>总数<span id="total">0</span><span id="sendAllMsg">发送所有频道(文字)</span><span id="sendAllImg">发送所有频道(图片)</span></li>
 </ul>
 <script>
     var socket = io.connect('http://sendmsg.0372.cn');
@@ -49,14 +49,14 @@
 
     socket.emit('room', 'manager');
     socket.on('peopleNum', function (data) {
-        total.innerText = data.msg.total;
-        qc.text(data.msg.qc) ;
-        tg.text(data.msg.tg);
-        jc.text(data.msg.jc);
-        hy.text(data.msg.hy);
-        bbs.text( data.msg.bbs);
-        zz.text(data.msg.zz);
-        fc.text(data.msg.fc);
+        total.text(data.msg.total);
+        qc.text(data.msg.obj.qc) ;
+        tg.text(data.msg.obj.tg);
+        jc.text(data.msg.obj.jc);
+        hy.text(data.msg.obj.hy);
+        bbs.text( data.msg.obj.bbs);
+        zz.text(data.msg.obj.zz);
+        fc.text(data.msg.obj.fc);
     });
     $('#sendAllMsg').on('click', function () {
         socket.emit('manager_info', { msg: message.val() });
