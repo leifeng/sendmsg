@@ -49,9 +49,11 @@ var NUM = {
             this.totalNum();
         },
         totalNum: function () {
+            var _total=0;
             for (var i in NUM) {
-                TOTALNUM += NUM[i];
+                _total += NUM[i];
             }
+            TOTALNUM=_total;
         },
         resetNum: function () {
             console.log('检查小于0')
