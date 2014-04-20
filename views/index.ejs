@@ -18,19 +18,23 @@
 <h4>在线人数：</h4>
 <ul>
     <li>汽车<span id="qc">0</span><span class="sendOneMsg" title="qc">发送文字</span><span class="sendOneImg"
-                                                                                    title="qc">发送图片</span></li>
+                                                                                     title="qc">发送图片</span></li>
     <li>团购<span id="tg">0</span><span class="sendOneMsg" title="tg">发送文字</span><span class="sendOneImg"
-                                                                                    title="tg">发送图片</span></li>
+                                                                                     title="tg">发送图片</span></li>
     <li>建材<span id="jc">0</span><span class="sendOneMsg" title="jc">发送文字</span><span class="sendOneImg"
-                                                                                    title="jc">发送图片</span></li>
+                                                                                     title="jc">发送图片</span></li>
     <li>论坛<span id="bbs">0</span><span class="sendOneMsg" title="bbs">发送文字</span><span class="sendOneImg" title="bbs">发送图片</span>
     </li>
     <li>主站<span id="zz">0</span><span class="sendOneMsg" title="zz">发送文字</span><span class="sendOneImg"
-                                                                                    title="zz">发送图片</span></li>
+                                                                                     title="zz">发送图片</span></li>
     <li>黄页<span id="hy">0</span><span class="sendOneMsg" title="hy">发送文字</span><span class="sendOneImg"
-                                                                                    title="hy">发送图片</span></li>
+                                                                                     title="hy">发送图片</span></li>
     <li>房产<span id="fc">0</span><span class="sendOneMsg" title="fc">发送文字</span><span class="sendOneImg"
-                                                                                    title="fc">发送图片</span></li>
+                                                                                     title="fc">发送图片</span></li>
+    <li>人才<span id="rc">0</span><span class="sendOneMsg" title="rc">发送文字</span><span class="sendOneImg"
+                                                                                     title="rc">发送图片</span></li>
+    <li>惠刷<span id="hs">0</span><span class="sendOneMsg" title="hs">发送文字</span><span class="sendOneImg"
+                                                                                     title="hs">发送图片</span></li>
     <li>总数<span id="total">0</span><span id="sendAllMsg">发送所有频道(文字)</span><span id="sendAllImg">发送所有频道(图片)</span></li>
 </ul>
 <script>
@@ -42,6 +46,8 @@
     var zz = $('#zz');
     var hy = $('#hy');
     var fc = $('#fc');
+    var rc = $('#rc');
+    var hs = $('#hs');
     var total = $('#total');
     var message = $('#msg');
     var imgurl = $('#imgurl');
@@ -49,14 +55,16 @@
 
     socket.emit('room', 'manager');
     socket.on('peopleNum', function (data) {
-        total.text(data.msg.obj.qc+data.msg.obj.tg+data.msg.obj.jc+data.msg.obj.hy+data.msg.obj.bbs+data.msg.obj.zz+data.msg.obj.fc);
-        qc.text(data.msg.obj.qc) ;
+        total.text(data.msg.obj.qc + data.msg.obj.tg + data.msg.obj.jc + data.msg.obj.hy + data.msg.obj.bbs + data.msg.obj.zz + data.msg.obj.fc+data.msg.obj.hs+data.msg.obj.rc);
+        qc.text(data.msg.obj.qc);
         tg.text(data.msg.obj.tg);
         jc.text(data.msg.obj.jc);
         hy.text(data.msg.obj.hy);
-        bbs.text( data.msg.obj.bbs);
+        bbs.text(data.msg.obj.bbs);
         zz.text(data.msg.obj.zz);
         fc.text(data.msg.obj.fc);
+        hs.text(data.msg.obj.hs);
+        rc.text(data.msg.obj.rc);
     });
     $('#sendAllMsg').on('click', function () {
         socket.emit('manager_info', { msg: message.val() });

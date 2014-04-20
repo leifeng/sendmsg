@@ -36,7 +36,9 @@ var NUM = {
         bbs: 0,
         zz: 0,
         fc: 0,
-        tg: 0
+        tg: 0,
+        hs:0,
+        rc:0
     }
     , NumManager = {
         addNum: function (data) {
@@ -60,9 +62,8 @@ var NUM = {
 io.enable('browser client minification');
 io.enable('browser client etag');
 io.set('log level', 2);
-//io.set('heartbeat interval', '40');
+io.set('heartbeat interval', '30');
 io.sockets.on('connection', function (socket) {
-    console.log(socket);
     NumManager.resetNum();
     socket.on('room', function (room) {
         console.log('加入：' + room);
