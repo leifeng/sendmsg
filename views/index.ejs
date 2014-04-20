@@ -49,7 +49,7 @@
 
     socket.emit('room', 'manager');
     socket.on('peopleNum', function (data) {
-        total.text(data.msg.total);
+        total.text(data.msg.obj.qc+data.msg.obj.tg+data.msg.obj.jc+data.msg.obj.hy+data.msg.obj.bbs+data.msg.obj.zz+data.msg.obj.fc);
         qc.text(data.msg.obj.qc) ;
         tg.text(data.msg.obj.tg);
         jc.text(data.msg.obj.jc);

@@ -37,23 +37,15 @@ var NUM = {
         zz: 0,
         fc: 0,
         tg: 0
-    },
-    TOTALNUM = 0
+    }
     , NumManager = {
         addNum: function (data) {
             NUM[data]++;
-            this.totalNum();
+
         },
         subNum: function (data) {
             NUM[data]--;
-            this.totalNum();
-        },
-        totalNum: function () {
-            var _total=0;
-            for (var i in NUM) {
-                _total += NUM[i];
-            }
-            TOTALNUM=_total;
+
         },
         resetNum: function () {
             console.log('检查小于0')
@@ -68,26 +60,30 @@ var NUM = {
 io.enable('browser client minification');
 io.enable('browser client etag');
 io.set('log level', 2);
-io.set('heartbeat interval', '40');
+//io.set('heartbeat interval', '40');
 io.sockets.on('connection', function (socket) {
+    console.log(socket);
     NumManager.resetNum();
     socket.on('room', function (room) {
         console.log('加入：' + room);
         console.log(NUM)
         socket.room = room;
         socket.join(room);
+        if(room==='manager'){
+            io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+        }
     });
 
     socket.on('channel', function (data) {
         console.log('上线：' + data.msg);
         NumManager.addNum(data.msg);
-        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM, total: TOTALNUM} });
+        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     });
 
     socket.on('unchannel', function (data) {
         console.log('下线：' + data.msg);
         NumManager.subNum(data.msg);
-        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM, total: TOTALNUM} });
+        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     });
 
     socket.on('manager_info', function (data) {
