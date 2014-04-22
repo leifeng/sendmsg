@@ -2,41 +2,123 @@
 <html>
 <head>
     <title>推送管理</title>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
-    <script src="/javascripts/jquery-1.10.2.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
+<div class="container">
+    <h3>文字</h3>
 
-<input type="text" width="200" id="msg" placeholder="文字">
-<br/>
-<input type="text" width="500" id="imgurl" placeholder="图片">
-<input type="text" width="500" id="imglink" placeholder="链接">
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="msgtext">文字内容</label>
+            <input type="text" class="form-control" id="msgtext" placeholder="文字内容">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="msglink">文字链接</label>
+            <input type="text" class="form-control" id="msglink" placeholder="文字链接">
+        </div>
+    </form>
+    <h3>图片</h3>
 
+    <form class="form-inline" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="imgtext">图片说明</label>
+            <input type="text" class="form-control" id="imgtext" placeholder="图片说明">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="imgurl">图片地址</label>
+            <input type="text" class="form-control" id="imgurl" placeholder="图片地址">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="imglink">图片链接</label>
+            <input type="text" class="form-control" id="imglink" placeholder="图片链接">
+        </div>
+    </form>
+    <h3>在线人数:</h3>
 
-<h4>在线人数：</h4>
-<ul>
-    <li>汽车<span id="qc">0</span><span class="sendOneMsg" title="qc">发送文字</span><span class="sendOneImg"
-                                                                                     title="qc">发送图片</span></li>
-    <li>团购<span id="tg">0</span><span class="sendOneMsg" title="tg">发送文字</span><span class="sendOneImg"
-                                                                                     title="tg">发送图片</span></li>
-    <li>建材<span id="jc">0</span><span class="sendOneMsg" title="jc">发送文字</span><span class="sendOneImg"
-                                                                                     title="jc">发送图片</span></li>
-    <li>论坛<span id="bbs">0</span><span class="sendOneMsg" title="bbs">发送文字</span><span class="sendOneImg" title="bbs">发送图片</span>
-    </li>
-    <li>主站<span id="zz">0</span><span class="sendOneMsg" title="zz">发送文字</span><span class="sendOneImg"
-                                                                                     title="zz">发送图片</span></li>
-    <li>黄页<span id="hy">0</span><span class="sendOneMsg" title="hy">发送文字</span><span class="sendOneImg"
-                                                                                     title="hy">发送图片</span></li>
-    <li>房产<span id="fc">0</span><span class="sendOneMsg" title="fc">发送文字</span><span class="sendOneImg"
-                                                                                     title="fc">发送图片</span></li>
-    <li>人才<span id="rc">0</span><span class="sendOneMsg" title="rc">发送文字</span><span class="sendOneImg"
-                                                                                     title="rc">发送图片</span></li>
-    <li>惠刷<span id="hs">0</span><span class="sendOneMsg" title="hs">发送文字</span><span class="sendOneImg"
-                                                                                     title="hs">发送图片</span></li>
-    <li>总数<span id="total">0</span><span id="sendAllMsg">发送所有频道(文字)</span><span id="sendAllImg">发送所有频道(图片)</span></li>
-</ul>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-condensed">
+            <tr>
+                <td>频道</td>
+                <td>在线人数</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">汽车</span></td>
+                <td><span class="label label-info" id="qc">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="qc">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="qc">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">团购</span></td>
+                <td><span class="label label-info" id="tg">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="tg">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="tg">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">建材</span></td>
+                <td><span class="label label-info" id="jc">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="jc">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="jc">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">论坛</span></td>
+                <td><span class="label label-info" id="bbs">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="bbs">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="bbs">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">主站</span></td>
+                <td><span class="label label-info" id="zz">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="zz">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="zz">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">黄页</span></td>
+                <td><span class="label label-info" id="hy">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="hy">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="hy">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">房产</span></td>
+                <td><span class="label label-info" id="fc">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="fc">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="fc">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">人才</span></td>
+                <td><span class="label label-info" id="rc">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="rc">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="rc">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-default">惠刷</span></td>
+                <td><span class="label label-info" id="hs">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendOneMsg" href="javascript:;" role="button" title="hs">发送文字</a></td>
+                <td><a class="btn btn-success btn-xs sendOneImg" href="javascript:;" role="button" title="hs">发送图片</a></td>
+            </tr>
+            <tr>
+                <td><span class="label label-danger">总数</span></td>
+                <td><span class="label label-info" id="total">0</span></td>
+                <td><a class="btn btn-primary btn-xs sendAllMsg" href="javascript:;" role="button" title="total">群发文字</a></td>
+                <td><a class="btn btn-success btn-xs sendAllImg" href="javascript:;" role="button" title="total">群发图片</a></td>
+            </tr>
+        </table>
+    </div>
+    <div class="alert alert-success" style="display: none" id="tip">发送成功</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/jquery-1.10.2.js"></script>
+<script src="/javascripts/bootstrap.min.js"></script>
 <script>
     var socket = io.connect('http://sendmsg.0372.cn');
     var qc = $('#qc');
@@ -49,13 +131,16 @@
     var rc = $('#rc');
     var hs = $('#hs');
     var total = $('#total');
-    var message = $('#msg');
+    var msgtext = $('#msgtext');
+    var msglink = $('#msglink');
+    var imgtext=$('#imgtext');
     var imgurl = $('#imgurl');
     var imglink = $('#imglink');
+    var tip = $("#tip");
 
     socket.emit('room', 'manager');
     socket.on('peopleNum', function (data) {
-        total.text(data.msg.obj.qc + data.msg.obj.tg + data.msg.obj.jc + data.msg.obj.hy + data.msg.obj.bbs + data.msg.obj.zz + data.msg.obj.fc+data.msg.obj.hs+data.msg.obj.rc);
+        total.text(data.msg.obj.qc + data.msg.obj.tg + data.msg.obj.jc + data.msg.obj.hy + data.msg.obj.bbs + data.msg.obj.zz + data.msg.obj.fc + data.msg.obj.hs + data.msg.obj.rc);
         qc.text(data.msg.obj.qc);
         tg.text(data.msg.obj.tg);
         jc.text(data.msg.obj.jc);
@@ -66,21 +151,22 @@
         hs.text(data.msg.obj.hs);
         rc.text(data.msg.obj.rc);
     });
-    $('#sendAllMsg').on('click', function () {
-        socket.emit('manager_info', { msg: message.val() });
-        console.log('ok')
+    $('.sendAllMsg').on('click', function () {
+        socket.emit('manager_info', { msg: {text:msgtext.val(),link:msglink.val() }});
+        tip.slideDown('fast').delay('1000').slideUp('fast');
+
     });
-    $('#sendAllImg').on('click', function () {
-        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val()}});
-        console.log('ok')
+    $('.sendAllImg').on('click', function () {
+        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val(),text:imgtext.val()}});
+        tip.slideDown('fast').delay('1000').slideUp('fast');
     });
     $('.sendOneMsg').on('click', function () {
-        socket.emit('manager_info', { msg: message.val(), room: $(this).attr('title') });
-        console.log('ok')
+        socket.emit('manager_info', { msg:{text:msgtext.val(),link:msglink.val() }, room: $(this).attr('title') });
+        tip.slideDown('fast').delay('1000').slideUp('fast');
     });
     $('.sendOneImg').on('click', function () {
-        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val()}, room: $(this).attr('title')});
-        console.log('ok')
+        socket.emit('manager_img', { msg: {url: imgurl.val(), link: imglink.val(),text:imgtext.val()}, room: $(this).attr('title')});
+        tip.slideDown('fast').delay('1000').slideUp('fast');
     });
 
 </script>

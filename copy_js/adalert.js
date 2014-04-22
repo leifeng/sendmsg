@@ -12,7 +12,7 @@
                 autoClose: true,
                 closeTime: 5000,
                 imgUrl: null,
-                imgLink: null,
+                link: null,
                 msg: null,
                 width: '200',
                 height: '250',
@@ -32,13 +32,13 @@
 
         //事件设置
         if (options.type === 'msg') {
-            adPanel.text(options.msg);
-            console.log('msg')
+            adPanel.html('<a href="'+options.link+'">'+options.msg+'</a>');
+
         }
 
         if (options.type === 'img') {
-            adPanel.html('<div style="margin: 8px auto">'+options.msg+'</div><a href="' + options.imgLink + '"><img src="' + options.imgUrl + '" width="' + (options.width-10) + '" height="' + (options.height-50) + '"></a>');
-            console.log('img')
+            adPanel.html('<div style="margin: 8px auto">'+options.msg+'</div><a href="' + options.link + '"><img src="' + options.imgUrl + '" width="' + (options.width-10) + '" height="' + (options.height-50) + '"></a>');
+
         }
 
         //动画设置
