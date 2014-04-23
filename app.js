@@ -64,7 +64,7 @@ io.enable('browser client etag');
 io.set('log level', 2);
 io.set('heartbeat interval', '30');
 io.sockets.on('connection', function (socket) {
-    NumManager.resetNum();
+    //NumManager.resetNum();
     socket.on('channel', function (data) {
         console.log('加入：' + data.msg);
         socket.room = data.msg;

@@ -138,7 +138,7 @@
     var imglink = $('#imglink');
     var tip = $("#tip");
 
-    socket.emit('room', 'manager');
+    socket.emit('channel',{msg: 'manager'});
     socket.on('peopleNum', function (data) {
         total.text(data.msg.obj.qc + data.msg.obj.tg + data.msg.obj.jc + data.msg.obj.hy + data.msg.obj.bbs + data.msg.obj.zz + data.msg.obj.fc + data.msg.obj.hs + data.msg.obj.rc);
         qc.text(data.msg.obj.qc);
