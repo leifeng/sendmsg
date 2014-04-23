@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-//app.get('/index', routes.index);
+
 var NUM = {
         qc: 0,
         jc: 0,
@@ -65,28 +65,14 @@ io.set('log level', 2);
 io.set('heartbeat interval', '30');
 io.sockets.on('connection', function (socket) {
     NumManager.resetNum();
-    socket.on('room', function (room) {
-        console.log('加入：' + room);
-        console.log(NUM)
-        socket.room = room;
-        socket.join(room);
-        if(room==='manager'){
-            io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
-        }
-    });
-
     socket.on('channel', function (data) {
-        console.log('上线：' + data.msg);
+        console.log('加入：' + data.msg);
+        socket.room = data.msg;
+        socket.join(data.msg);
         NumManager.addNum(data.msg);
+        console.log(NUM)
         io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     });
-
-    socket.on('unchannel', function (data) {
-        console.log('下线：' + data.msg);
-       // NumManager.subNum(data.msg);
-        //io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
-    });
-
     socket.on('manager_info', function (data) {
         console.log(data);
         if (data.room) {
@@ -94,8 +80,6 @@ io.sockets.on('connection', function (socket) {
         } else {
             io.sockets.emit('server_info', data);
         }
-
-
     });
     socket.on('manager_img', function (data) {
         console.log(data);
@@ -105,13 +89,15 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('server_img', data);
         }
     });
-
     socket.on('disconnect', function () {
-        console.log('离开：' + socket.room);
-        socket.leave(socket.room);
-        NumManager.subNum(socket.room);
-        console.log(NUM);
-        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+        if(typeof  socket.room!='undefined'){
+            console.log('离开：' + socket.room);
+            socket.leave(socket.room);
+            NumManager.subNum(socket.room);
+            console.log(NUM);
+            io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+        }
+
     })
 });
 
