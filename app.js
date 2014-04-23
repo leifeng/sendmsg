@@ -37,8 +37,8 @@ var NUM = {
         zz: 0,
         fc: 0,
         tg: 0,
-        hs:0,
-        rc:0
+        hs: 0,
+        rc: 0
     }
     , NumManager = {
         addNum: function (data) {
@@ -54,7 +54,7 @@ var NUM = {
             for (var i in NUM) {
                 if (NUM[i] < 0) {
                     NUM[i] = 0;
-                    console.log('小于0的有',i)
+                    console.log('小于0的有', i)
                 }
             }
         }
@@ -64,14 +64,15 @@ io.enable('browser client etag');
 io.set('log level', 2);
 io.set('heartbeat interval', '30');
 io.sockets.on('connection', function (socket) {
-    //NumManager.resetNum();
+    console.log(NUM);
+    io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     socket.on('channel', function (data) {
         console.log('加入：' + data.msg);
         socket.room = data.msg;
         socket.join(data.msg);
-        NumManager.addNum(data.msg);
-        console.log(NUM)
-        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+        if (data.msg !== 'manager') {
+            NumManager.addNum(data.msg);
+        }
     });
     socket.on('manager_info', function (data) {
         console.log(data);
@@ -90,12 +91,12 @@ io.sockets.on('connection', function (socket) {
         }
     });
     socket.on('disconnect', function () {
-        if(typeof  socket.room!='undefined'){
+        if (typeof  socket.room != 'undefined') {
             console.log('离开：' + socket.room);
             socket.leave(socket.room);
-            NumManager.subNum(socket.room);
-            console.log(NUM);
-            io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+            if (socket.room !== 'manager') {
+                NumManager.subNum(socket.room);
+            }
         }
 
     })
