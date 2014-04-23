@@ -97,6 +97,8 @@ io.sockets.on('connection', function (socket) {
             if (socket.room !== 'manager') {
                 NumManager.subNum(socket.room);
             }
+            console.log(NUM);
+            io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
         }
 
     })
