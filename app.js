@@ -28,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-
+//app.get('/index', routes.index);
 var NUM = {
         qc: 0,
         jc: 0,
@@ -83,8 +83,8 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('unchannel', function (data) {
         console.log('下线：' + data.msg);
-        NumManager.subNum(data.msg);
-        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+       // NumManager.subNum(data.msg);
+        //io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     });
 
     socket.on('manager_info', function (data) {
@@ -108,8 +108,10 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         console.log('离开：' + socket.room);
-        console.log(NUM)
         socket.leave(socket.room);
+        NumManager.subNum(socket.room);
+        console.log(NUM);
+        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     })
 });
 
