@@ -64,8 +64,7 @@ io.enable('browser client etag');
 io.set('log level', 2);
 io.set('heartbeat interval', '30');
 io.sockets.on('connection', function (socket) {
-    console.log(NUM);
-    io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
+
     socket.on('channel', function (data) {
         console.log('加入：' + data.msg);
         socket.room = data.msg;
@@ -73,6 +72,8 @@ io.sockets.on('connection', function (socket) {
         if (data.msg !== 'manager') {
             NumManager.addNum(data.msg);
         }
+        console.log(NUM);
+        io.sockets.in('manager').emit("peopleNum", {msg: {obj: NUM} });
     });
     socket.on('manager_info', function (data) {
         console.log(data);
