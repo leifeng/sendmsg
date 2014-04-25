@@ -3,6 +3,11 @@
  */
 
 exports.index = function (req, res) {
-    res.render('index');
+    if(req.cookies.islogin==='ok'){
+        res.render('index');
+    }else{
+        res.redirect('login');
+    }
+
 };
 
